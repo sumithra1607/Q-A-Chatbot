@@ -1,1 +1,7 @@
 .env
+# Ignore uploads folder (user PDFs)
+src/uploads/
+
+# Ignore Python cache
+__pycache__/
+*/__pycache__/
