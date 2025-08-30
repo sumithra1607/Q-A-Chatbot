@@ -11,7 +11,7 @@ env:
 
 jobs:
   build-and-deploy:
-    runs-on: Linux
+    runs-on: ubuntu-latest
     steps:
       # Checkout code
       - name: Check out code
@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
-          
+
       # Install dependencies
       - name: Install dependencies
         run: |
