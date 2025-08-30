@@ -1,0 +1,169 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   DocuMind Speak - Sign In / Sign Up
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+ </head>
+ <body class="bg-[#f8f9fb] min-h-screen flex flex-col">
+  <header class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+   <div class="flex items-center space-x-3">
+    <div class="bg-[#dbe7ff] rounded-lg p-3">
+     <img alt="Blue icon representing healthcare with stethoscope shape" class="w-6 h-6" height="24" src="https://storage.googleapis.com/a1aa/image/8096553f-6c02-40de-31c1-694b7626ae8a.jpg" width="24"/>
+    </div>
+    <div>
+     <h1 class="font-semibold text-gray-900 text-lg leading-5">
+      DocuMind Speak
+     </h1>
+     <p class="text-gray-500 text-xs leading-4">
+      Healthcare Documentation Assistant
+     </p>
+    </div>
+   </div>
+  </header>
+  <main class="flex-grow flex flex-col justify-center items-center px-6 py-12 max-w-md mx-auto w-full">
+   <div class="w-full bg-white rounded-lg shadow-md p-8">
+    <div class="flex justify-center mb-6 space-x-4">
+     <button id="signInBtn" class="px-6 py-2 font-semibold text-blue-600 border-b-2 border-blue-600 focus:outline-none" type="button">
+      Sign In
+     </button>
+     <button id="signUpBtn" class="px-6 py-2 font-semibold text-gray-500 border-b-2 border-transparent hover:text-blue-600 focus:outline-none" type="button">
+      Sign Up
+     </button>
+    </div>
+    <form id="signInForm" class="space-y-6" autocomplete="off">
+     <div>
+      <label class="block text-gray-700 font-medium mb-1" for="signin-email">
+       Email address
+      </label>
+      <input class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="signin-email" name="email" placeholder="you@example.com" required="" type="email"/>
+     </div>
+     <div>
+      <label class="block text-gray-700 font-medium mb-1" for="signin-password">
+       Password
+      </label>
+      <input class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="signin-password" name="password" placeholder="Enter your password" required="" type="password"/>
+     </div>
+     <button class="w-full bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700 transition" type="submit">
+      Sign In
+     </button>
+    </form>
+    <form id="signUpForm" class="space-y-6 hidden" autocomplete="off">
+     <div>
+      <label class="block text-gray-700 font-medium mb-1" for="signup-name">
+       Full Name
+      </label>
+      <input class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="signup-name" name="fullname" placeholder="Your full name" required="" type="text"/>
+     </div>
+     <div>
+      <label class="block text-gray-700 font-medium mb-1" for="signup-email">
+       Email address
+      </label>
+      <input class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="signup-email" name="email" placeholder="you@example.com" required="" type="email"/>
+     </div>
+     <div>
+      <label class="block text-gray-700 font-medium mb-1" for="signup-password">
+       Password
+      </label>
+      <input class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="signup-password" name="password" placeholder="Create a password" required="" type="password"/>
+     </div>
+     <div>
+      <label class="block text-gray-700 font-medium mb-1" for="signup-password-confirm">
+       Confirm Password
+      </label>
+      <input class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="signup-password-confirm" name="passwordConfirm" placeholder="Confirm your password" required="" type="password"/>
+     </div>
+     <button class="w-full bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700 transition" type="submit">
+      Sign Up
+     </button>
+    </form>
+   </div>
+  </main>
+  <script>
+   const signInBtn = document.getElementById('signInBtn');
+    const signUpBtn = document.getElementById('signUpBtn');
+    const signInForm = document.getElementById('signInForm');
+    const signUpForm = document.getElementById('signUpForm');
+
+    signInBtn.addEventListener('click', () => {
+      signInBtn.classList.add('text-blue-600', 'border-blue-600');
+      signInBtn.classList.remove('text-gray-500', 'border-transparent');
+      signUpBtn.classList.remove('text-blue-600', 'border-blue-600');
+      signUpBtn.classList.add('text-gray-500', 'border-transparent');
+      signInForm.classList.remove('hidden');
+      signUpForm.classList.add('hidden');
+    });
+
+    signUpBtn.addEventListener('click', () => {
+      signUpBtn.classList.add('text-blue-600', 'border-blue-600');
+      signUpBtn.classList.remove('text-gray-500', 'border-transparent');
+      signInBtn.classList.remove('text-blue-600', 'border-blue-600');
+      signInBtn.classList.add('text-gray-500', 'border-transparent');
+      signUpForm.classList.remove('hidden');
+      signInForm.classList.add('hidden');
+    });
+    // SIGN UP
+document.getElementById('signUpForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const data = {
+    fullname: document.getElementById('signup-name').value,
+    email: document.getElementById('signup-email').value,
+    password: document.getElementById('signup-password').value
+  };
+  const res = await fetch('/signup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: "include",
+    body: JSON.stringify(data)
+  });
+  const result = await res.json();
+  if (result.success) {
+    window.location.href = '/details';
+  } else {
+    alert(result.message);
+  }
+});
+
+// SIGN IN
+document.getElementById('signInForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const data = {
+    email: document.getElementById('signin-email').value,
+    password: document.getElementById('signin-password').value
+  };
+  const res = await fetch('/signin', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: "include",
+    body: JSON.stringify(data)
+  });
+  const result = await res.json();
+  if (result.success) {
+    window.location.href = '/chat';
+  } else {
+    alert(result.message);
+  }
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+     const params = new URLSearchParams(window.location.search);
+     const mode = params.get('mode');
+     if (mode === 'signup') {
+       signUpBtn.click();
+     } else {
+       signInBtn.click();
+     }
+   });
+   
+  </script>
+ </body>
+</html>

@@ -1,0 +1,141 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>DocuMind Speak</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      background-image: url('/static/images/bg.avif');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    main {
+      background-color: rgba(248, 249, 251, 0.85);
+      border-radius: 12px;
+      padding: 3rem 2rem;
+      margin-top: 4rem;
+      max-width: 3xl;
+    }
+
+    button {
+      background-color: #3b82f6;
+      color: white;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+
+    .features {
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 0 1rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .feature-card img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 1rem;
+    }
+  </style>
+ </head>
+ <body class="flex flex-col items-center justify-center">
+  <header class="flex items-center justify-between w-full px-6 py-4 border-b border-gray-200 bg-white/80">
+   <div class="flex items-center space-x-3">
+    <div class="bg-[#dbe7ff] rounded-lg p-3">
+     <img alt="Healthcare icon" class="w-6 h-6" src="https://storage.googleapis.com/a1aa/image/8096553f-6c02-40de-31c1-694b7626ae8a.jpg"/>
+    </div>
+    <div>
+     <h1 class="font-semibold text-gray-900 text-lg">DocuMind Speak</h1>
+     <p class="text-gray-500 text-xs">Healthcare Documentation Assistant</p>
+    </div>
+   </div>
+  </header>
+  
+  <main class="flex flex-col justify-center items-center px-6 py-8 text-center mx-auto max-w-2xl mt-12">
+
+   <h2 class="font-extrabold text-gray-900 text-4xl sm:text-5xl leading-tight">
+    AI-Powered Healthcare
+    <br/>
+    <span class="text-blue-600">Documentation Assistant</span>
+   </h2>
+   <p class="mt-4 text-gray-700 text-base sm:text-lg leading-relaxed max-w-xl">
+    Upload medical documents, drug labels, and clinical guidelines. Get instant AI-powered insights, prescribing information, and patient-specific advice.
+   </p>
+   <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center w-full max-w-md">
+  <button 
+      onclick="window.location.href='/auth?mode=signin'" 
+      class="bg-blue-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700 transition">
+    Sign In to Your Account
+  </button>
+  <button 
+      onclick="window.location.href='/auth?mode=signup'" 
+      class="bg-blue-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700 transition">
+    Sign Up
+  </button>
+</div>
+
+  </main>
+
+  <!-- Features Section -->
+  <section class="features transform translate-x-36 mt-44">
+
+    <h2 class="text-3xl font-bold text-center mb-6">Transform Healthcare Documentation</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <img src="/static/images/feature1.png" alt="Document Analysis">
+        <h3 class="font-semibold mb-2">Document Analysis</h3>
+        <p>Upload PDF documents, drug labels, medical reports, and clinical guidelines for instant AI analysis.</p>
+      </div>
+      <div class="feature-card">
+        <img src="/static/images/feature2.jpeg" alt="AI-Powered Insights">
+        <h3 class="font-semibold mb-2">AI-Powered Insights</h3>
+        <p>Get contextually aware responses with citations from your documents. Ask about dosages, interactions, and more.</p>
+      </div>
+      <div class="feature-card">
+        <img src="/static/images/feature3.jpg" alt="Clinical Support">
+        <h3 class="font-semibold mb-2">Clinical Support</h3>
+        <p>Extract prescribing information, safety alerts, and patient-specific advice to support clinical decisions.</p>
+      </div>
+      <div class="feature-card">
+        <img src="/static/images/feature4.png" alt="Secure & Private">
+        <h3 class="font-semibold mb-2">Secure & Private</h3>
+        <p>Your medical documents are processed with enterprise-grade security and HIPAA-compliant protocols.</p>
+      </div>
+      <div class="feature-card">
+        <img src="/static/images/feature5.png" alt="Instant Responses">
+        <h3 class="font-semibold mb-2">Instant Responses</h3>
+        <p>Get immediate answers to your questions with relevant citations and references from uploaded documents.</p>
+      </div>
+      <div class="feature-card">
+        <img src="/static/images/feature6.png" alt="Healthcare Focused">
+        <h3 class="font-semibold mb-2">Healthcare Focused</h3>
+        <p>Built specifically for healthcare professionals, with understanding of medical terminology and protocols.</p>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

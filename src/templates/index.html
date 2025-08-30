@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DocuMind Speak - Chatbot</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    #chatMessages { scrollbar-width: thin; scrollbar-color: #a0aec0 #edf2f7; }
+    #chatMessages::-webkit-scrollbar { width: 8px; }
+    #chatMessages::-webkit-scrollbar-track { background: #edf2f7; }
+    #chatMessages::-webkit-scrollbar-thumb { background-color: #a0aec0; border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-[#f8f9fb] min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="flex items-center justify-between px-6 py-4 border-b border-gray-200 relative">
+    <div class="flex items-center space-x-3">
+      <div class="bg-[#dbe7ff] rounded-lg p-3">
+        <img alt="Healthcare Icon" class="w-6 h-6" src="https://storage.googleapis.com/a1aa/image/8096553f-6c02-40de-31c1-694b7626ae8a.jpg" />
+      </div>
+      <div>
+        <h1 class="font-semibold text-gray-900 text-lg leading-5">DocuMind Speak</h1>
+        <p class="text-gray-500 text-xs leading-4">Healthcare Documentation Assistant</p>
+      </div>
+    </div>
+
+    <!-- Profile + Logout -->
+    <div class="relative flex items-center space-x-3">
+      <!-- Profile Button -->
+      <button id="profileBtn" aria-label="User Profile" 
+        class="flex items-center space-x-2 bg-blue-600 text-white px-3 py-1.5 rounded-md hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" 
+             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" 
+                d="M5.121 17.804A9 9 0 1118.88 6.196 9 9 0 015.12 17.804z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" 
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <span class="text-sm font-medium">Profile</span>
+      </button>
+
+      <!-- Logout Button -->
+      <button id="logoutBtn" 
+        class="bg-red-600 text-white px-3 py-1.5 rounded-md hover:bg-red-700 transition focus:outline-none focus:ring-2 focus:ring-red-500 text-sm font-medium">
+        Logout
+      </button>
+
+      <!-- Dropdown -->
+      <div id="profileDropdown" 
+        class="hidden absolute right-0 mt-2 w-56 bg-white border border-gray-300 rounded-md shadow-lg z-50 top-full">
+        <div class="p-4 text-gray-700 text-sm space-y-2">
+          <div><strong>Name:</strong> <span id="profileName"></span></div>
+        <div><strong>Email:</strong> <span id="profileEmail"></span></div>
+        <div><strong>Subscription:</strong> Free Trial</div>
+        <div><strong>Member Since:</strong> <span id="profileSince"></span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Chat -->
+  <main class="flex-grow flex flex-col max-w-3xl mx-auto w-full px-6 py-8">
+    <div id="chatContainer" class="flex flex-col border border-gray-300 rounded-lg bg-white shadow-md h-[600px]">
+      <div id="chatMessages" class="flex-grow overflow-y-auto p-4 space-y-4"></div>
+
+       <!-- FAQ Buttons -->
+      <div id="faq-section" class="px-4 pb-2 flex flex-wrap gap-2 border-t border-gray-100">
+        <button class="faq-btn bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-blue-700 transition" onclick="sendFAQ('What is the use of it?')">Uses?</button>
+        <button class="faq-btn bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-blue-700 transition" onclick="sendFAQ('How should it be administered?')">Administration</button>
+        <button class="faq-btn bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-blue-700 transition" onclick="sendFAQ('What is the recommended dosage?')">Dosage</button>
+        <button class="faq-btn bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-blue-700 transition" onclick="sendFAQ('What are the possible side effects?')">Side Effects</button>
+        <button class="faq-btn bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-blue-700 transition" onclick="sendFAQ('Are there any precautions or interactions?')">Precautions</button>
+        <button class="faq-btn bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-blue-700 transition" onclick="sendFAQ('Are there any contraindications?')">Contraindications</button>
+        <Interactions></Interactions></button>
+      </div>
+
+      <!-- Input Row -->
+      <form id="chatForm" class="flex items-center border-t border-gray-300 p-4 space-x-3" enctype="multipart/form-data">
+        <input type="file" id="fileUpload" name="file" accept=".pdf" class="hidden" />
+        <label for="fileUpload" 
+          class="cursor-pointer bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-blue-700 transition">
+          Upload PDF
+        </label>
+        <span id="fileName" class="text-sm text-gray-600"></span>
+        <input type="text" id="chatInput" name="question" placeholder="Type your question here..."
+          class="flex-grow border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <button type="submit" 
+          class="bg-blue-600 text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700 transition">
+          Send
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+  // Profile dropdown toggle
+  const profileBtn = document.getElementById("profileBtn");
+  const profileDropdown = document.getElementById("profileDropdown");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  profileBtn.addEventListener("click", () => {
+    profileDropdown.classList.toggle("hidden");
+    if (!profileDropdown.classList.contains("hidden")) {
+      loadProfile();
+    }
+  });
+
+  async function loadProfile() {
+    try {
+      const response = await fetch('/user_details');
+      const data = await response.json();
+      if (data.success) {
+        document.getElementById('profileName').textContent = data.name || '';
+        document.getElementById('profileEmail').textContent = data.email || '';
+        document.getElementById('profileSince').textContent = data.since || '';
+      } else {
+        document.getElementById('profileName').textContent = '';
+        document.getElementById('profileEmail').textContent = '';
+        document.getElementById('profileSince').textContent = '';
+      }
+    } catch (e) {
+      document.getElementById('profileName').textContent = '';
+      document.getElementById('profileEmail').textContent = '';
+      document.getElementById('profileSince').textContent = '';
+    }
+  }
+
+  // Close dropdown if clicked outside
+  window.addEventListener("click", (e) => {
+    if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+      profileDropdown.classList.add("hidden");
+    }
+  });
+
+  // Logout → redirect to homepage (or login page)
+  logoutBtn.addEventListener("click", () => {
+    window.location.href = "/";
+  });
+
+  // Chat logic elements
+  const chatMessages = document.getElementById('chatMessages');
+  const chatForm = document.getElementById('chatForm');
+  const chatInput = document.getElementById('chatInput');
+  const fileUpload = document.getElementById('fileUpload');
+  const fileNameSpan = document.getElementById('fileName');
+
+  // Add message
+  function addMessage(text, sender = 'user') {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = sender === 'user' ? 'text-right' : 'text-left';
+    const bubble = document.createElement('div');
+    bubble.className = sender === 'user'
+      ? 'inline-block bg-blue-600 text-white px-4 py-2 rounded-lg max-w-xs break-words'
+      : 'inline-block bg-gray-200 text-gray-900 px-4 py-2 rounded-lg max-w-xs break-words';
+    bubble.innerHTML = text.replace(/\n/g, "<br>");
+    messageDiv.appendChild(bubble);
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  // Typing indicator
+  function showTyping() {
+    const typingDiv = document.createElement('div');
+    typingDiv.id = 'typingIndicator';
+    typingDiv.className = 'text-left text-gray-500 italic';
+    typingDiv.textContent = 'DocuMind Speak is typing...';
+    chatMessages.appendChild(typingDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function removeTyping() {
+    const typingDiv = document.getElementById('typingIndicator');
+    if (typingDiv) typingDiv.remove();
+  }
+
+  // Unified message handler for both chat input and FAQ buttons
+  async function handleMessage(message) {
+    const trimmed = message.trim();
+    if (!trimmed) return;
+
+    addMessage(trimmed, 'user');
+    chatInput.value = '';
+    chatInput.disabled = true;
+    chatForm.querySelector('button[type="submit"]').disabled = true;
+    showTyping();
+
+    try {
+      const response = await fetch('/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: trimmed })
+      });
+      const data = await response.json();
+      removeTyping();
+      addMessage(data.answer, 'bot');
+
+      if (data.sources && data.sources.length > 0) {
+        const sourcesDiv = document.createElement('div');
+        sourcesDiv.className = 'text-left text-xs text-gray-500 mt-1 space-y-1 max-w-xs';
+        const sourcesTitle = document.createElement('div');
+        sourcesTitle.className = 'font-semibold';
+        sourcesTitle.textContent = 'Sources:';
+        sourcesDiv.appendChild(sourcesTitle);
+
+        data.sources.slice(0, 3).forEach(src => {
+          const srcLine = document.createElement('div');
+          if (src.source.startsWith('http')) {
+            srcLine.innerHTML = `<a href="${src.source}" target="_blank" class="text-blue-600 underline">${src.source}</a>`;
+          } else {
+            srcLine.textContent = `${src.source}${src.page ? ` (Page ${src.page})` : ''}`;
+          }
+          sourcesDiv.appendChild(srcLine);
+        });
+
+        chatMessages.appendChild(sourcesDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+    } catch (error) {
+      removeTyping();
+      addMessage("⚠️ Sorry, something went wrong. Please try again.", 'bot');
+      console.error(error);
+    } finally {
+      chatInput.disabled = false;
+      chatForm.querySelector('button[type="submit"]').disabled = false;
+      chatInput.focus();
+    }
+  }
+
+  // Chat submit
+  chatForm.addEventListener('submit', e => {
+    e.preventDefault();
+    handleMessage(chatInput.value);
+  });
+
+  // FAQ buttons: just call handleMessage
+  function sendFAQ(question) {
+    handleMessage(question);
+  }
+
+  // PDF upload
+  fileUpload.addEventListener('change', async () => {
+    if (fileUpload.files.length > 0) {
+      fileNameSpan.textContent = `📄 Selected: ${fileUpload.files[0].name}`;
+
+      const formData = new FormData();
+      formData.append('file', fileUpload.files[0]);
+
+      showTyping();
+      try {
+        const uploadResponse = await fetch('/upload_pdf', { method: 'POST', body: formData });
+        const result = await uploadResponse.json();
+        removeTyping();
+        addMessage(`✅ ${result.message}`, 'bot');
+        fileUpload.value = '';
+        fileNameSpan.textContent = "";
+      } catch (err) {
+        removeTyping();
+        addMessage("⚠️ Failed to upload PDF.", 'bot');
+        console.error(err);
+      }
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   DocuMind Speak - User Details
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+ </head>
+ <body class="bg-[#f8f9fb] min-h-screen flex flex-col">
+  <header class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+   <div class="flex items-center space-x-3">
+    <div class="bg-[#dbe7ff] rounded-lg p-3">
+     <img alt="Blue icon representing healthcare with stethoscope shape" class="w-6 h-6" height="24" src="https://storage.googleapis.com/a1aa/image/8096553f-6c02-40de-31c1-694b7626ae8a.jpg" width="24"/>
+    </div>
+    <div>
+     <h1 class="font-semibold text-gray-900 text-lg leading-5">
+      DocuMind Speak
+     </h1>
+     <p class="text-gray-500 text-xs leading-4">
+      Healthcare Documentation Assistant
+     </p>
+    </div>
+   </div>
+   <button id="skipBtn" class="text-blue-600 font-semibold text-sm hover:underline focus:outline-none" type="button">
+    Skip
+   </button>
+  </header>
+  <main class="flex-grow flex flex-col justify-center items-center px-6 py-12 max-w-md mx-auto w-full">
+   <div class="w-full bg-white rounded-lg shadow-md p-8">
+    <h2 class="text-2xl font-extrabold text-gray-900 mb-6 text-center">
+     User Details
+    </h2>
+    <form class="space-y-6" autocomplete="off">
+     <div>
+      <label class="block text-gray-700 font-medium mb-1" for="name">
+       Full Name
+      </label>
+      <input class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="name" name="name" placeholder="Your full name" required="" type="text"/>
+     </div>
+     <div>
+      <label class="block text-gray-700 font-medium mb-1" for="age">
+       Age
+      </label>
+      <input class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="age" name="age" placeholder="Your age" required="" type="number" min="0" max="150"/>
+     </div>
+     <div>
+      <label class="block text-gray-700 font-medium mb-1" for="height">
+       Height (cm)
+      </label>
+      <input class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="height" name="height" placeholder="Your height in centimeters" required="" type="number" min="0" step="0.1"/>
+     </div>
+     <div>
+      <label class="block text-gray-700 font-medium mb-1" for="weight">
+       Weight (kg)
+      </label>
+      <input class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" id="weight" name="weight" placeholder="Your weight in kilograms" required="" type="number" min="0" step="0.1"/>
+     </div>
+     <button class="w-full bg-blue-600 text-white font-semibold py-3 rounded-md hover:bg-blue-700 transition" type="submit">
+      Save Details
+     </button>
+    </form>
+   </div>
+  </main>
+  <script>
+    document.querySelector("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const details = {
+    name: document.getElementById("name").value || null,
+    age: document.getElementById("age").value || null,
+    height: document.getElementById("height").value || null,
+    weight: document.getElementById("weight").value || null
+  };
+  const res = await fetch("/user_details", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",   // 🔥 add this
+    body: JSON.stringify(details)
+  });
+  const data = await res.json();
+  if (data.success) {
+    window.location.href = "/auth?mode=signin";
+  } else {
+    alert(data.message);
+  }
+});
+
+   document.getElementById('skipBtn').addEventListener('click', () => {
+      // Replace the URL below with the actual page you want to navigate to after skipping
+      window.location.href = '/auth?mode=signin';
+    });
+  </script>
+ </body>
+</html>
