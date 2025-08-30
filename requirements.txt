@@ -3,9 +3,6 @@ flask-cors==4.0.0
 gunicorn==21.2.0
 werkzeug==2.3.7
 faiss-cpu==1.7.4
-langchain==0.2.11
-langchain-community==0.2.10
-langchain-groq==0.1.0
 sentence-transformers==2.6.1
 transformers==4.42.3
 torch==2.3.1
